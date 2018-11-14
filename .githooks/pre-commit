@@ -1,0 +1,26 @@
+# Checking the Drupal standards and best practices with Code Sniffer.
+ROOT_DIR="$(pwd)"
+LIST=$( git diff --name-only --cached --diff-filter=ACM -- '*.php' '*.inc' '*.profile' '*.module' '*.install' '*.profile')
+PHPCS_BIN=${ROOT_DIR}/vendor/bin/phpcs
+PHPCS_DRUPAL_STANDARD=${ROOT_DIR}/vendor/drupal/coder/coder_sniffer/Drupal/ruleset.xml
+PHPCS_DRUPAL_BEST_PRACTICES=${ROOT_DIR}/vendor/drupal/coder/coder_sniffer/DrupalPractice/ruleset.xml
+
+if [ ! -f $PHPCS_BIN ];
+  then
+    echo "Code sniffer is not installed correctly."
+    echo "Please require with composer drupal/coder and then make sure that the bin(1) and the ruleset(2) exist:"
+    echo "1: "${PHPCS_BIN}
+    echo "2: "${PHPCS_DRUPAL_STANDARD}
+    exit 1
+  else
+    echo "Sniffing..."
+fi
+
+if [ ! -z "$LIST" ];
+  then
+    $PHPCS_BIN --standard=${PHPCS_DRUPAL_STANDARD},${PHPCS_DRUPAL_BEST_PRACTICES} ${LIST}
+fi
+
+e=$?
+
+exit $e
