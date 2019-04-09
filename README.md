@@ -1,6 +1,6 @@
 #### 0. Have a setup with composer with a the web folder not in the root folder and install code sniffer with
 ```
-composer --global require drupal/coder
+composer require drupal/coder
 ```
 #### 1. Have a .githooks folder with executables
 ```
